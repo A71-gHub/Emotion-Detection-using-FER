@@ -1,5 +1,5 @@
 % 1. Load FER-2013 Dataset
-datasetPath = 'C:\Users\Admin\Downloads\FER 2013\images\train'; % Path to training dataset
+datasetPath = 'Dataset Path'; % Path to training dataset
 
 imds = imageDatastore(datasetPath, ...
     'IncludeSubfolders', true, ...
