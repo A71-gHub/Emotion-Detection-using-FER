@@ -1,0 +1,40 @@
+function [musicSignal, lightIntensity] = triggerActions(classLabel)
+% Trigger actions based on emotion class label
+% INPUT:
+% - classLabel: String representing the predicted emotion
+% OUTPUT:
+% - musicSignal: Signal controlling music playback
+% - lightIntensity: Signal for controlling ambient lighting
+
+    % Default outputs
+    musicSignal = 0;        % Default: No music
+    lightIntensity = 0;     % Default: No lighting change
+
+    % Actions based on emotion
+    switch classLabel
+        case 'Happy'
+            musicSignal = 1;        % Signal to play upbeat music
+            lightIntensity = 100;   % Bright light
+        case 'Sad'
+            musicSignal = 2;        % Signal to play calm music
+            lightIntensity = 50;    % Dim light
+        case 'Angry'
+            musicSignal = 3;        % Signal to play soothing music
+            lightIntensity = 30;    % Low light
+        case 'Neutral'
+            musicSignal = 0;        % No music
+            lightIntensity = 70;    % Normal light
+        case 'Fear'
+            musicSignal = 4;        % Signal to play comforting music
+            lightIntensity = 20;    % Very dim light
+        case 'Disgust'
+            musicSignal = 5;        % Signal to play neutral music
+            lightIntensity = 40;    % Moderate light
+        case 'Surprise'
+            musicSignal = 6;        % Signal to play exciting music
+            lightIntensity = 80;    % Bright light
+        otherwise
+            musicSignal = 0;        % Unknown: No action
+            lightIntensity = 0;     % No action
+    end
+end
