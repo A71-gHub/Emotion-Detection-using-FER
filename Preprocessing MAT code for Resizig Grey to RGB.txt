@@ -1,0 +1,62 @@
+% 1. Load FER-2013 Dataset
+datasetPath = 'C:\Users\Admin\Downloads\FER 2013\images\train'; % Path to training dataset
+
+imds = imageDatastore(datasetPath, ...
+    'IncludeSubfolders', true, ...
+    'LabelSource', 'foldernames');
+
+% Display dataset information
+disp('Dataset Labels:');
+disp(countEachLabel(imds));
+
+% 2. Preprocess Images: Resize and Convert to RGB
+outputSize = [224, 224, 3]; % Target size for images
+
+% Preprocess and save images to a new folder
+processedFolder = 'Processed_FER2013';
+if ~exist(processedFolder, 'dir')
+    mkdir(processedFolder);
+end
+
+% Call the helper function to process images
+writePreprocessedImages(imds, processedFolder, outputSize);
+
+% Reload Preprocessed Data as imageDatastore
+imdsProcessed = imageDatastore(processedFolder, ...
+    'IncludeSubfolders', true, ...
+    'LabelSource', 'foldernames');
+
+% Display information about the processed datastore
+disp('Processed Dataset:');
+disp(countEachLabel(imdsProcessed));
+
+% 3. Save Preprocessed Dataset
+save('FER2013_Preprocessed.mat', 'imdsProcessed');
+disp('Preprocessed dataset saved as "FER2013_Preprocessed.mat".');
+
+% 4. Launch Deep Network Designer
+deepNetworkDesigner;
+
+% -----------------------------------------------------------------------
+% Helper Function: writePreprocessedImages
+% -----------------------------------------------------------------------
+function writePreprocessedImages(imds, outputFolder, outputSize)
+    % Helper function to process images and save them into subfolders.
+    while hasdata(imds)
+        [img, info] = read(imds);
+        % Resize and convert to RGB
+        img = imresize(img, outputSize(1:2));
+        if size(img, 3) == 1 % Convert grayscale to RGB
+            img = repmat(img, 1, 1, 3);
+        end
+        % Create subfolder based on label
+        labelFolder = fullfile(outputFolder, char(info.Label));
+        if ~exist(labelFolder, 'dir')
+            mkdir(labelFolder);
+        end
+        % Write image
+        [~, imgName, ext] = fileparts(info.Filename);
+        imgFilename = fullfile(labelFolder, [imgName, ext]);
+        imwrite(img, imgFilename);
+    end
+end
