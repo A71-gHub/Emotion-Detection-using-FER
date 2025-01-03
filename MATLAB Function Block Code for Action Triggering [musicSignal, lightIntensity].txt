@@ -1,40 +1,50 @@
-function [musicSignal, lightIntensity] = triggerActions(classLabel)
+function [musicSignal, lightIntensity, seatPosition] = triggerActions(classLabel)
 % Trigger actions based on emotion class label
 % INPUT:
 % - classLabel: String representing the predicted emotion
 % OUTPUT:
 % - musicSignal: Signal controlling music playback
 % - lightIntensity: Signal for controlling ambient lighting
+% - seatPosition: Signal for adjusting the seat position
 
     % Default outputs
     musicSignal = 0;        % Default: No music
     lightIntensity = 0;     % Default: No lighting change
+    seatPosition = 0;       % Default: No seat adjustment
 
     % Actions based on emotion
     switch classLabel
         case 'Happy'
             musicSignal = 1;        % Signal to play upbeat music
             lightIntensity = 100;   % Bright light
+            seatPosition = 1;       % Relaxed seat adjustment
         case 'Sad'
             musicSignal = 2;        % Signal to play calm music
             lightIntensity = 50;    % Dim light
+            seatPosition = 2;       % Slightly upright for comfort
         case 'Angry'
             musicSignal = 3;        % Signal to play soothing music
             lightIntensity = 30;    % Low light
+            seatPosition = 3;       % Max upright for better posture
         case 'Neutral'
             musicSignal = 0;        % No music
             lightIntensity = 70;    % Normal light
+            seatPosition = 0;       % No change
         case 'Fear'
             musicSignal = 4;        % Signal to play comforting music
             lightIntensity = 20;    % Very dim light
+            seatPosition = 4;       % Relaxed with slight forward tilt
         case 'Disgust'
             musicSignal = 5;        % Signal to play neutral music
             lightIntensity = 40;    % Moderate light
+            seatPosition = 2;       % Slightly upright for comfort
         case 'Surprise'
             musicSignal = 6;        % Signal to play exciting music
             lightIntensity = 80;    % Bright light
+            seatPosition = 1;       % Relaxed seat adjustment
         otherwise
             musicSignal = 0;        % Unknown: No action
             lightIntensity = 0;     % No action
+            seatPosition = 0;       % No action
     end
 end
